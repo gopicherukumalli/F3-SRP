@@ -25,7 +25,8 @@ public class ApiMethods {
 		
 		if(BrowserContants.ENV.equals("PRD"))
 		{
-			RestAssured.baseURI =BrowserContants.PRD_API_URL;
+			//RestAssured.baseURI =BrowserContants.PRD_API_URL;
+			RestAssured.baseURI ="https://scrappingapi.rehlat.co/v1/scraping/";
 		}
 		else if(BrowserContants.ENV.equals("STG"))
 		{
