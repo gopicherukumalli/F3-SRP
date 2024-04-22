@@ -48,17 +48,7 @@ public class flyAdeal extends FlyAdealCacheFlow  {
 		        // Wait for the page to load completely
 		        isPageLoaded = wait.until(ExpectedConditions.urlContains("https://www.flyadeal.com/en/select-flight"));
 		    } catch (Exception e) {
-		        // Timeout occurred, handle the situation
-		        System.out.println("Page didn't load within 60 seconds on attempt " + attempt + ". Clearing cookies...");
-
-		        driver.get("chrome://settings/clearBrowserData");
-		        Thread.sleep(3000);
-		        JavascriptExecutor js = (JavascriptExecutor) driver;
-		        //get clear cache button
-		        WebElement clearBtn = (WebElement) js.executeScript("return document.querySelector(\"body > settings-ui\").shadowRoot.querySelector(\"#main\").shadowRoot.querySelector(\"settings-basic-page\").shadowRoot.querySelector(\"#basicPage > settings-section:nth-child(9) > settings-privacy-page\").shadowRoot.querySelector(\"settings-clear-browsing-data-dialog\").shadowRoot.querySelector(\"#clearBrowsingDataConfirm\")");
-		        //Click
-		        clearBtn.click();
-		        Thread.sleep(3000);
+		   
 
 		        // Refresh the page
 		        driver.get(flyAdealApiUrl);
