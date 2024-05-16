@@ -63,7 +63,7 @@ public class flyAdeal extends FlyAdealCacheFlow  {
             try {
             	//PageUtils.scrollDown(driver);
                 driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Privacy Policy.'])[1]/following::button[1]")).click();
-                Thread.sleep(2000);
+                //Thread.sleep(2000);
             } catch (Exception e) {
             	try {
             		driver.findElement(By.xpath("//button[@id='close_banner']")).click();
@@ -73,7 +73,7 @@ public class flyAdeal extends FlyAdealCacheFlow  {
             }
             //PageUtils.scrollUp(driver);
             driver.findElement(By.cssSelector("div.select_date_previous")).click();
-            Thread.sleep(2000);
+            Thread.sleep(1000);
 
             for (int weekOffset = 0; weekOffset < 7; weekOffset++) {
                 for (int dayOffset = 1; dayOffset <= 7; dayOffset++) {
@@ -87,7 +87,7 @@ public class flyAdeal extends FlyAdealCacheFlow  {
                     //System.out.println("Processing for date: " + Depdate);
 
                     driver.findElement(By.xpath("//app-trip-one-way/div/div[1]/div[2]/div[" + dayOffset + "]")).click();
-                    Thread.sleep(2000);
+                    Thread.sleep(500);
                     String DepDate=driver.findElement(By.xpath("//app-journey-one-way/section/app-trip-one-way/div/div[1]/div[2]/div["+dayOffset+"]/div/strong")).getText();
                     System.out.println(DepDate);
                     String[] dateParts = DepDate.split("\\W+");
@@ -156,7 +156,7 @@ public class flyAdeal extends FlyAdealCacheFlow  {
                     // If it's the last iteration of the inner loop and not the last week, click on the "Next" button
                     if (dayOffset == 7 && weekOffset < 6) {
                         driver.findElement(By.cssSelector("div.select-date-range.next-date-range")).click();
-                        Thread.sleep(2000);
+                        Thread.sleep(1000);
                     }
                     
                 }
