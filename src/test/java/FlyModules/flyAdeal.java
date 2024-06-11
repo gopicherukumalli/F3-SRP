@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -13,6 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import flows.FlyAdealCacheFlow;
 import pageObjects.Database;
+import pageObjects.PageUtils;
 
 public class flyAdeal extends FlyAdealCacheFlow  {
 	
@@ -36,18 +38,17 @@ public class flyAdeal extends FlyAdealCacheFlow  {
     public static void FlightDetails2(WebDriver driver, Database PnrDetails) throws Exception {
         String date;
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(19)); // Set the maximum wait time to 60 seconds
 		boolean isPageLoaded = false;
-		int maxAttempts = 4;
+		int maxAttempts = 3;
 		int attempt = 1;
 
 		while (!isPageLoaded && attempt <= maxAttempts) {
 		    try {
 		        // Wait for the page to load completely
 		        isPageLoaded = wait.until(ExpectedConditions.urlContains("https://www.flyadeal.com/en/select-flight"));
-		    } catch (Exception e) {
-		   
-
+		    }  catch (Exception e) {
+		      
 		        // Refresh the page
 		        driver.get(flyAdealApiUrl);
 		        Thread.sleep(4000);
@@ -57,95 +58,97 @@ public class flyAdeal extends FlyAdealCacheFlow  {
 		    attempt++;
 		}
         
-		 try {
-	            
-	            driver.findElement(By.cssSelector("div.select_date_previous")).click();
-	            Thread.sleep(1000);
+        try {
+            
+            driver.findElement(By.cssSelector("div.select_date_previous")).click();
+            Thread.sleep(1000);
 
-	            for (int weekOffset = 0; weekOffset < 5; weekOffset++) {
-	                for (int dayOffset = 1; dayOffset <= 7; dayOffset++) {
-	                    int totalOffset = weekOffset * 7 + dayOffset;
+            for (int weekOffset = 0; weekOffset < 5; weekOffset++) {
+                for (int dayOffset = 1; dayOffset <= 7; dayOffset++) {
+                    int totalOffset = weekOffset * 7 + dayOffset;
 
-	                    if (totalOffset > 35) {
-	                        break; // Exit the loop if the total days processed exceed 70
-	                    }
+                    if (totalOffset > 35) {
+                        break; // Exit the loop if the total days processed exceed 70
+                    }
 
-	                    Depdate = getDateAfterDaysFormatted(totalOffset - 1, "dd MMM yyyy");
-	                    //System.out.println("Processing for date: " + Depdate);
+                    Depdate = getDateAfterDaysFormatted(totalOffset - 1, "dd MMM yyyy");
+                    //System.out.println("Processing for date: " + Depdate);
 
-	                    driver.findElement(By.xpath("//app-trip-one-way/div/div[1]/div[2]/div[" + dayOffset + "]")).click();
-	                    Thread.sleep(1000);
-	                    String DepDate=driver.findElement(By.xpath("//app-journey-one-way/section/app-trip-one-way/div/div[1]/div[2]/div["+dayOffset+"]/div/strong")).getText().replace("month.", "");
-	                    System.out.println(DepDate);
-	                    String[] dateParts = DepDate.split("\\W+");
-	                    String day = dateParts[0];
-	                    String monthAbbreviation = dateParts[1];
-	                    
-	                    /*if (monthAbbreviation.equals("Nov") || monthAbbreviation.equals("Dec")) {
-	                    	Year = "2023";
-	                    } else {
-	                    	Year = "2024";
-	                    }*/
-	                    String Departdate = String.format("%s %s %s", day, monthAbbreviation, Year);
+                    driver.findElement(By.xpath("//app-trip-one-way/div/div[1]/div[2]/div[" + dayOffset + "]")).click();
+                    Thread.sleep(1000);
+                    String DepDate=driver.findElement(By.xpath("//app-journey-one-way/section/app-trip-one-way/div/div[1]/div[2]/div["+dayOffset+"]/div/strong")).getText().replace("month.", "");
+                    System.out.println(DepDate);
+                    String[] dateParts = DepDate.split("\\W+");
+                    String day = dateParts[0];
+                    String monthAbbreviation = dateParts[1];
+                    
+                    /*if (monthAbbreviation.equals("Nov") || monthAbbreviation.equals("Dec")) {
+                    	Year = "2023";
+                    } else {
+                    	Year = "2024";
+                    }*/
+                    String Departdate = String.format("%s %s %s", day, monthAbbreviation, Year);
 
-	                    //System.out.println("SRP Date: " + Departdate);
-	                    
-	                    //Thread.sleep(2000);
-	                    
-	                    Depdate = getDateAfterDaysFormatted(totalOffset - 1, "dd MMM yyyy");
-	                    //System.out.println("System Date: " + Depdate);
-	                    
-	                    if (Depdate.equals(Departdate)) {
-	                    	Depdate=Departdate;
-	                    } 
-	                    else {
-	                    	Depdate=Departdate;
-	                    }
-	                    String websiteDate = driver.findElement(By.xpath("//span[contains(text(),'Passenger')]")).getText();
-	                    date = websiteDate.split("\\|")[0].trim();
-	                    Currency = driver.findElement(By.cssSelector("span.currency.ng-star-inserted")).getText().replaceAll(" ", "");
-	                    
-	                    String F3Flights=driver.findElement(By.cssSelector(".flight_details_wrap, .no-flight-available-wrap")).getText().replaceAll(" ", "");
-	                    //System.out.println(F3Flights);
-	                    
-	                    if (F3Flights.equals("Noflightsavailable")) {
-	                    	System.out.println("No Flights");
-	    	                String From = PnrDetails.From;
-	    	                String To = PnrDetails.To;
-	    	                ApiMethods.sendResults(Currency, From, To, Depdate, new ArrayList<FadFlightDetails>());
-	                        
-	                    }
-	                    else {
-	                    	
-	                    FlightDetailsSending(driver, PnrDetails);
-	                    	 
-	                    }
+                    //System.out.println("SRP Date: " + Departdate);
+                    
+                    //Thread.sleep(2000);
+                    
+                    Depdate = getDateAfterDaysFormatted(totalOffset - 1, "dd MMM yyyy");
+                    //System.out.println("System Date: " + Depdate);
+                    
+                    if (Depdate.equals(Departdate)) {
+                    	Depdate=Departdate;
+                    } 
+                    else {
+                    	Depdate=Departdate;
+                    }
+                    String websiteDate = driver.findElement(By.xpath("//span[contains(text(),'Passenger')]")).getText();
+                    date = websiteDate.split("\\|")[0].trim();
+                    Currency = driver.findElement(By.cssSelector("span.currency.ng-star-inserted")).getText().replaceAll(" ", "");
+                    
+                    String F3Flights=driver.findElement(By.cssSelector(".flight_details_wrap, .no-flight-available-wrap")).getText().replaceAll(" ", "");
+                    //System.out.println(F3Flights);
+                    
+                    if (F3Flights.equals("Noflightsavailable")) {
+                    	System.out.println("No Flights");
+    	                String From = PnrDetails.From;
+    	                String To = PnrDetails.To;
+    	                ApiMethods.sendResults(Currency, From, To, Depdate, new ArrayList<FadFlightDetails>());
+                        
+                    }
+                    else {
+                    	
+                    FlightDetailsSending(driver, PnrDetails);
+                    	 
+                    }
 
-	                    /*List<WebElement> flightDetails = driver.findElements(By.xpath("//div[@class='flight_details_wrap']"));
-	                    //System.out.println("Total Flights :" + flightDetails.size());
+                    /*List<WebElement> flightDetails = driver.findElements(By.xpath("//div[@class='flight_details_wrap']"));
+                    //System.out.println("Total Flights :" + flightDetails.size());
 
-	                    if (flightDetails.size() == 0) {
-	                    	System.out.println("No Flights");
-	    	                String From = PnrDetails.From;
-	    	                String To = PnrDetails.To;
-	    	                ApiMethods.sendResults(Currency, From, To, Depdate, new ArrayList<FadFlightDetails>());
-	                        // Handle no flights scenario
-	                    } else {
-	                        FlightDetailsSending(driver, PnrDetails);
-	                    }*/
+                    if (flightDetails.size() == 0) {
+                    	System.out.println("No Flights");
+    	                String From = PnrDetails.From;
+    	                String To = PnrDetails.To;
+    	                ApiMethods.sendResults(Currency, From, To, Depdate, new ArrayList<FadFlightDetails>());
+                        // Handle no flights scenario
+                    } else {
+                        FlightDetailsSending(driver, PnrDetails);
+                    }*/
 
-	                    // If it's the last iteration of the inner loop and not the last week, click on the "Next" button
-	                    if (dayOffset == 7 && weekOffset < 4) {
-	                        driver.findElement(By.cssSelector("div.select-date-range.next-date-range")).click();
-	                        Thread.sleep(1000);
-	                    }
-	                    
-	                }
-	            }
-	        } catch (Exception e) {
-	            // Handle exceptions
-	        }
-	    }
+                    // If it's the last iteration of the inner loop and not the last week, click on the "Next" button
+                    if (dayOffset == 7 && weekOffset < 4) {
+                        driver.findElement(By.cssSelector("div.select-date-range.next-date-range")).click();
+                        Thread.sleep(1000);
+                    }
+                    
+                }
+            }
+        } catch (Exception e) {
+            // Handle exceptions
+        }
+    }
+
+
 
 	
 	public static void FlightDetailsSending(WebDriver driver,Database PnrDetails) throws Exception
@@ -436,8 +439,6 @@ public class flyAdeal extends FlyAdealCacheFlow  {
 	}
 
 }
-
-
 
 
 
