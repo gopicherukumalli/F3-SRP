@@ -167,7 +167,6 @@ public class flyAdeal extends FlyAdealCacheFlow  {
 		 
 		 String flySeatNum="99";
 		 String flyFare=null;
-		 String Currency="SAR";
 		 String FlyplusFare=null;
 		 String StartTerminal=null;
 		 String EndTerminal=null;
