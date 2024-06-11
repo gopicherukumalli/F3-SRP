@@ -54,11 +54,11 @@ public class FlyAdealCacheFlow{
         // Check if the current time falls within the specified range
         if (currentTime.isAfter(startTime) || currentTime.equals(startTime) ||
             currentTime.isBefore(endTime) && currentTime.isAfter(LocalTime.MIDNIGHT)) {
-            days = 8;
-            skipdays = 7;
+            days = 5;
+            skipdays = 4;
         } else {
-        	days = 8;
-            skipdays = 7;
+        	days = 5;
+            skipdays = 4;
         }
 	    
 		RequestSpecification request = RestAssured.given();
