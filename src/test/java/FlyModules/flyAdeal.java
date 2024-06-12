@@ -102,9 +102,11 @@ public class flyAdeal extends FlyAdealCacheFlow  {
                     else {
                     	Depdate=Departdate;
                     }
-                    String websiteDate = driver.findElement(By.xpath("//span[contains(text(),'Passenger')]")).getText();
-                    date = websiteDate.split("\\|")[0].trim();
-                    Currency = driver.findElement(By.cssSelector("span.currency.ng-star-inserted")).getText().replaceAll(" ", "");
+                    //String websiteDate = driver.findElement(By.xpath("//span[contains(text(),'Passenger')]")).getText();
+                    //date = websiteDate.split("\\|")[0].trim();
+                    String CurrencyType = driver.findElement(By.cssSelector("div.cost-info.ng-star-inserted")).getText();
+                    String[] CurrencyParts = CurrencyType.split("\\W+");
+                    Currency = CurrencyParts[0];
                     
                     String F3Flights=driver.findElement(By.cssSelector(".flight_details_wrap, .no-flight-available-wrap")).getText().replaceAll(" ", "");
                     //System.out.println(F3Flights);
@@ -113,6 +115,7 @@ public class flyAdeal extends FlyAdealCacheFlow  {
                     	System.out.println("No Flights");
     	                String From = PnrDetails.From;
     	                String To = PnrDetails.To;
+    	                String Currency= "SAR";
     	                ApiMethods.sendResults(Currency, From, To, Depdate, new ArrayList<FadFlightDetails>());
                         
                     }
@@ -438,7 +441,4 @@ public class flyAdeal extends FlyAdealCacheFlow  {
 	}
 
 }
-
-
-
 
