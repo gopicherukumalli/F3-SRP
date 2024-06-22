@@ -80,8 +80,8 @@ public class FlyAdealCacheFlow{
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				String strDate= formatter.format(depDate);
 				System.out.println("strDate :"+strDate);
-				flyAdealApiUrl="https://www.flyadeal.com/en/booking/select/?origin1="+data.From.toUpperCase()+"&destination1="+data.To.toUpperCase()+"&departure1="+strDate +"&adt1=1";
-				//flyAdealApiUrl="https://www.flyadeal.com/en/search-flight/?origin1="+data.From.toUpperCase()+"&destination1="+data.To.toUpperCase()+"&departure1="+strDate +"&adt1=1&chd1=0&inf1=0&currency=SAR&source=airtrfx?utm_source=wego_meta&utm_medium=landingpage&utm_campaign=promomar&utm_content=herobanner";
+				//flyAdealApiUrl="https://www.flyadeal.com/en/booking/select/?origin1="+data.From.toUpperCase()+"&destination1="+data.To.toUpperCase()+"&departure1="+strDate +"&adt1=1";
+				flyAdealApiUrl="https://www.flyadeal.com/en/search-flight/?origin1="+data.From.toUpperCase()+"&destination1="+data.To.toUpperCase()+"&departure1="+strDate +"&adt1=1&chd1=0&inf1=0&currency=SAR&source=airtrfx?utm_source=wego_meta&utm_medium=landingpage&utm_campaign=promomar&utm_content=herobanner";
 				
                 //String flyAdealApiUrl="https://www.flyadeal.com/en/booking/select?destination1="+data.To+"&inf1=0&currency=SAR&source=airtrfx&chd1=0&adt1=1&origin1="+data.From+"&departure1="+strDate +"";
                 //String flyAdealApiUrl="https://www.flyadeal.com/en/booking/select?destination1="+data.To+"&inf1=0&utm_campaign=FlightsFromTabuk_En_8122021&utm_medium=Cover&currency=SAR&source=airtrfx&chd1=0&adt1=1&origin1="+data.From+"&departure1="+strDate +"&utm_source=HomePage";
