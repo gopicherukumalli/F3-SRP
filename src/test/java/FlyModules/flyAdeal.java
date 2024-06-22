@@ -102,20 +102,17 @@ public class flyAdeal extends FlyAdealCacheFlow  {
                     else {
                     	Depdate=Departdate;
                     }
-                    //String websiteDate = driver.findElement(By.xpath("//span[contains(text(),'Passenger')]")).getText();
-                    //date = websiteDate.split("\\|")[0].trim();
-                    String CurrencyType = driver.findElement(By.cssSelector("div.cost-info.ng-star-inserted")).getText();
-                    String[] CurrencyParts = CurrencyType.split("\\W+");
-                    Currency = CurrencyParts[0];
+                    String websiteDate = driver.findElement(By.xpath("//span[contains(text(),'Passenger')]")).getText();
+                    date = websiteDate.split("\\|")[0].trim();
+                    Currency = driver.findElement(By.cssSelector("span.currency.ng-star-inserted")).getText().replaceAll(" ", "");
                     
-                    String F3Flights=driver.findElement(By.cssSelector(".flight_details_wrap, .no-flight-available-wrap")).getText().replaceAll(" ", "");
+                    String F3Flights=driver.findElement(By.xpath("//app-journey-one-way[1]/section[1]/app-trip-one-way[1]/app-journey-fare-details[1]/div[2]")).getText().replaceAll(" ", "").replaceAll("journeyFareDetails-Popup.", "");
                     //System.out.println(F3Flights);
                     
-                    if (F3Flights.equals("Noflightsavailable")) {
+                    if (F3Flights.contains("Noflightsavailable") || F3Flights.contains("journeyFare.para1")) {
                     	System.out.println("No Flights");
     	                String From = PnrDetails.From;
     	                String To = PnrDetails.To;
-    	                String Currency= "SAR";
     	                ApiMethods.sendResults(Currency, From, To, Depdate, new ArrayList<FadFlightDetails>());
                         
                     }
@@ -194,7 +191,7 @@ public class flyAdeal extends FlyAdealCacheFlow  {
                      //String str1=ele.replaceAll("[\r\n]+", " ").replace(",", "");
 					 String str1=ele.replaceAll("[\r\n]+", " ").replace(",", "").replace("F3 ", "F3");
 					 
-					 String s=str1.replaceAll("Select Fare","").replaceAll("Your #flyforless flight ","").replaceAll("Sharm El Sheikh", "SharmElSheikh").replaceAll("Terminal[1-9] ", "").replaceAll("From ", "").replaceAll("journeyFareDetails-Popup.", "").replaceAll("Dubai Airport ", "Dubai ").replaceAll("Soldout", "Sold Out");
+					 String s=str1.replaceAll("Select Fare","").replaceAll("Your #flyforless flight ","").replaceAll("Sharm El Sheikh", "SharmElSheikh").replaceAll("Terminal[1-9] ", "").replaceAll("From ", "").replaceAll("journeyFareDetails-Popup.", "").replaceAll("Dubai Airport ", "Dubai ").replaceAll("Soldout", "Sold Out").replaceAll("Dubai Al Maktoum Airport", "DubaiAlMaktoumAirport");
 					 String Str = new String(s);
 				        
 				      
@@ -441,4 +438,7 @@ public class flyAdeal extends FlyAdealCacheFlow  {
 	}
 
 }
+
+
+
 
