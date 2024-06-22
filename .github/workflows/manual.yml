@@ -3,6 +3,7 @@ name: SRP
 on:
   schedule:
     - cron: '* * * * *'
+    - cron: '*/05 * * * *'
 
 jobs:
   runtests:
